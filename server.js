@@ -5,7 +5,7 @@ import cron from 'node-cron'
 import FileOlderThan from 'file-older-than'
 import 'dotenv/config'
 import express from 'express'
-
+import http from 'http'
 
 var fileListPath = './filelist.json'
 var fileList = []
@@ -25,6 +25,7 @@ else{
 }
 
 var app = express();
+var server = http.createServer(app);
 app.set('view engine', 'ejs')
 
 app.get('/', function(req, res) {
@@ -45,8 +46,10 @@ app.get('/search', function(req, res) {
   })  
 })
 
-app.listen(process.env.PORT)
-console.log(`Listening on ${process.env.PORT}.`)
+server.listen(process.env.PORT, process.env.BIND_ADDRESS)
+server.on('listening', function() {
+    console.log('Server started on %s:%s.', server.address().address, server.address().port)
+})
 console.log(`Loaded ${fileList.length} known files.`)
 
 cron.schedule('0 0 0 * * *', getFilesJob)
