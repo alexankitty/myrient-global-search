@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
 
 app.get('/search', function(req, res) {
   let results = fuzzySearch(fileList, req.query.q)
-  if(process.env.DEBUG = "1"){
+  if(process.env.DEBUG == "1"){
     console.log(results)
   }
   res.render('pages/index', {
