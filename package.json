@@ -3,7 +3,8 @@
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "fuzzystring": "^1.0.2",
-    "jdom": "^3.2.5",
-    "node-cron": "^3.0.3"
+    "jsdom": "^25.0.1",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2"
   }
 }
