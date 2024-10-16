@@ -5,7 +5,15 @@ var app = express();
 app.set('view engine', 'ejs')
 
 app.get('/', function(req, res) {
-  res.render('pages/index')  
+  res.render('pages/index', {
+    page: 'search'
+  })  
+})
+
+app.get('/search', function(req, res) {
+  res.render('pages/index', {
+    page: 'results'
+  })  
 })
 
 app.listen(process.env.PORT)

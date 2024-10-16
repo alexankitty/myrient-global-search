@@ -3,20 +3,14 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
-<body class="container">
-
+<body class="d-flex flex-column min-vh-100">
 <header>
   <%- include('../partials/header'); %>
 </header>
 
-<main>
-  <div class="jumbotron">
-    <h1>This is great</h1>
-    <p>Welcome to templating using EJS</p>
-  </div>
-</main>
+<%- include(page); %>
 
-<footer>
+<footer class="footer mt-auto text-center">
   <%- include('../partials/footer'); %>
 </footer>
 
