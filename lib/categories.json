@@ -1,0 +1,394 @@
+{
+    "Categories": {
+        "Acorn": [
+            "Archimedes",
+            "Atom",
+            "RISC"
+        ],
+        "ACT": [
+            "Apricot PC Xi"
+        ],
+        "Amstrad": [
+            "CPC"
+        ],
+        "Analogue": [
+            "Pocket"
+        ],
+        "APF": [
+            "Imagination Machine",
+            "MP-1000"
+        ],
+        "Apple": [
+            "I",
+            "II Plus",
+            "II",
+            "IIGS",
+            "IIe",
+            "Macintosh"
+        ],
+        "Apple-Bandai": [
+            "Pippin",
+            "Playdia"
+        ],
+        "Arcade": [
+            "PC-based"
+        ],
+        "Arduboy Inc": [
+            "Arduboy"
+        ],
+        "Atari": [
+            "2600",
+            "5200",
+            "7800",
+            "8-bit",
+            "Jaguar",
+            "Lynx",
+            "ST"
+        ],
+        "Bally": [
+            "Astrocade"
+        ],
+        "Bandai": [
+            "Design Master Denshi Mangajuku",
+            "Gundam RX-78",
+            "WonderSwan Color",
+            "WonderSwan"
+        ],
+        "Benesse": [
+            "Pocket Challenge V2",
+            "Pocket Challenge W"
+        ],
+        "Bit Corporation": [
+            "Gamate"
+        ],
+        "Casio": [
+            "Loopy",
+            "PV-1000"
+        ],
+        "Coleco": [
+            "ColecoVision"
+        ],
+        "Commodore": [
+            "Amiga",
+            "Commodore 64",
+            "Plus-4",
+            "VIC-20"
+        ],
+        "Digital Media Cartridge": [
+            "Firecore"
+        ],
+        "Emerson": [
+            "Arcadia 2001"
+        ],
+        "Entex": [
+            "Adventure Vision"
+        ],
+        "Epoch": [
+            "Game Pocket Computer",
+            "Super Cassette Vision"
+        ],
+        "Fairchild": [
+            "Channel F"
+        ],
+        "Fujitsu": [
+            "FM Towns",
+            "FM-7",
+            "FM-Towns",
+            "FMR50"
+        ],
+        "Fukutake Publishing": [
+            "StudyBox"
+        ],
+        "Funtech": [
+            "Super Acan"
+        ],
+        "funworld": [
+            "Photo Play"
+        ],
+        "GamePark": [
+            "GP2X",
+            "GP32"
+        ],
+        "GCE": [
+            "Vectrex"
+        ],
+        "Google": [
+            "Android"
+        ],
+        "Hartung": [
+            "Game Master"
+        ],
+        "Hasbro": [
+            "VideoNow Color",
+            "VideoNow Jr",
+            "VideoNow XP",
+            "VideoNow",
+            "iON"
+        ],
+        "Hitachi": [
+            "S1"
+        ],
+        "IBM": [
+            "PC Compatible",
+            "PC and Compatibles"
+        ],
+        "Incredible Technologies": [
+            "Eagle"
+        ],
+        "Interton": [
+            "VC 4000"
+        ],
+        "iQue": [
+            "iQue"
+        ],
+        "Konami": [
+            "FireBeat",
+            "M2",
+            "Picno",
+            "System 573",
+            "System GV",
+            "e-Amusement"
+        ],
+        "LeapFrog": [
+            "Explorer",
+            "LeapPad",
+            "Leapster"
+        ],
+        "Luxor": [
+            "ABC 800"
+        ],
+        "Magnavox": [
+            "Odyssey 2"
+        ],
+        "Mattel": [
+            "Fisher-Price iXL",
+            "HyperScan",
+            "Intellivision"
+        ],
+        "Memorex": [
+            "Visual Information System"
+        ],
+        "Merit": [
+            "Megatouch"
+        ],
+        "Microsoft": [
+            "MSX",
+            "MSX2",
+            "Pocket PC",
+            "Xbox 360",
+            "Xbox"
+        ],
+        "Milton-Bradley": [
+            "Omni"
+        ],
+        "Mobile": [
+            "J2ME",
+            "Palm OS",
+            "Pocket PC",
+            "Symbian"
+        ],
+        "Namco": [
+            "System 246"
+        ],
+        "Navisoft": [
+            "Naviken 2.1"
+        ],
+        "NEC": [
+            "PC Engine",
+            "PC-88",
+            "PC-98",
+            "PC-FX"
+        ],
+        "Nichibutsu": [
+            "My Vision"
+        ],
+        "Nintendo": [
+            "3DS",
+            "64",
+            "64DD",
+            "DS",
+            "DSi",
+            "Family BASIC",
+            "Family Computer Disk System",
+            "Family Computer Network System",
+            "Game & Watch",
+            "Game Boy Advance",
+            "Game Boy Color",
+            "Game Boy",
+            "Gamecube",
+            "Kiosk Video Compact Flash",
+            "Misc",
+            "New Nintendo 3DS",
+            "Nintendo Entertainment System",
+            "Pokemon Mini",
+            "SDKs",
+            "Satellaview",
+            "Sufami Turbo",
+            "Super Nintendo Entertainment System",
+            "Triforce",
+            "VirtualBoy",
+            "Wallpapers",
+            "Wii U",
+            "Wii",
+            "amiibo"
+        ],
+        "Nokia": [
+            "N-Gage"
+        ],
+        "Others": [
+            "Audio",
+            "BD-Video",
+            "CD-ROM",
+            "DVD-ROM",
+            "DVD-Video",
+            "HD DVD",
+            "HD DVD-Video",
+            "HumblePlay",
+            "Palm",
+            "Photo CD",
+            "Pocket PC",
+            "Project EGG",
+            "Video CD",
+            "Video Game Documents",
+            "Video Game Magazine Scans",
+            "Video Game OSTs",
+            "Video Game Scans",
+            "itch.io"
+        ],
+        "Ouya": [
+            "Ouya"
+        ],
+        "Panasonic": [
+            "3DO",
+            "M2"
+        ],
+        "Philips": [
+            "CD-i",
+            "videopac+"
+        ],
+        "RCA": [
+            "Studio II"
+        ],
+        "Sanyo": [
+            "MBC-550"
+        ],
+        "Sega": [
+            "32X",
+            "Beena",
+            "CD",
+            "Chihiro",
+            "Dreamcast",
+            "Game Gear",
+            "Lindbergh",
+            "Master System",
+            "Mega Drive",
+            "Naomi 2",
+            "Naomi",
+            "PICO",
+            "Prologue 21",
+            "RingEdge 2",
+            "RingEdge",
+            "SG-1000",
+            "Saturn"
+        ],
+        "Seta": [
+            "Aleck64"
+        ],
+        "Sharp": [
+            "MZ-2200",
+            "MZ-700",
+            "X1",
+            "X68000"
+        ],
+        "Sinclair": [
+            "ZX Spectrum"
+        ],
+        "SNK": [
+            "NeoGeo CD",
+            "NeoGeo Pocket Color",
+            "NeoGeo Pocket"
+        ],
+        "Sony": [
+            "Electronic Book",
+            "PlayStation 2",
+            "PlayStation 3",
+            "PlayStation Mobile",
+            "PlayStation Portable",
+            "PlayStation Vita",
+            "PlayStation"
+        ],
+        "Tab-Austria": [
+            "Quizard"
+        ],
+        "TeleNova": [
+            "Compis"
+        ],
+        "Texas Instruments": [
+            "TI-99-4A"
+        ],
+        "Tiger": [
+            "Game.com",
+            "Gizmondo"
+        ],
+        "Tomy": [
+            "Kiss-Site"
+        ],
+        "Toshiba": [
+            "Pasopia",
+            "Visicom"
+        ],
+        "VM Labs": [
+            "NUON"
+        ],
+        "VTech": [
+            "CreatiVision",
+            "V.Flash & V.Smile Pro",
+            "V.Smile"
+        ],
+        "Watara": [
+            "SuperVision"
+        ],
+        "Welback": [
+            "Mega Duck"
+        ],
+        "Yamaha": [
+            "Copera"
+        ],
+        "ZAPiT Games": [
+            "Game Wave Family Entertainment System"
+        ],
+        "Zeebo": [
+            "Zeebo"
+        ]
+    },
+    "Types": [
+        "BIOS",
+        "BigEndian",
+        "ByteSwapped",
+        "CBZ",
+        "DLC",
+        "Decrypted",
+        "Development Kit",
+        "Digital",
+        "Disc Keys",
+        "GameShark",
+        "Header",
+        "Headerless",
+        "LittleEndian",
+        "NKit",
+        "NoNpDrm",
+        "PDF",
+        "PS one Classics",
+        "PSN",
+        "PSX2PSP",
+        "RAW",
+        "Source Code",
+        "UMD Music",
+        "UMD Video",
+        "Updates and DLC",
+        "Updates",
+        "VPK",
+        "Visual Memory Unit",
+        "WUX"
+    ]
+}
