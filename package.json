@@ -1,10 +1,12 @@
 {
   "dependencies": {
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "fuzzystring": "^1.0.2",
     "jsdom": "^25.0.1",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2"
-  }
+  },
+  "type": "module"
 }
