@@ -14,4 +14,13 @@
         <a class="nav-link text-white" href="/settings">Settings</a>
       </li>
     </ul>
-  </nav>
+</nav>
+
+<script defer>
+  const aTags = document.querySelectorAll('a')
+  aTags.forEach(aTag => {
+    if(aTag.getAttribute('href') == window.location.pathname){
+      aTag.classList.add('selected')
+    }
+  })
+</script>
