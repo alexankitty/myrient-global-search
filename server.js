@@ -1,31 +1,37 @@
-import getAllFiles from './lib/dirwalk.js'
+import getAllFiles from './lib/dircrawl.js'
 import {parseJsonFile, saveJsonFile, fileExists} from './lib/loadfiles.js'
-import fuzzySearch from './lib/search.js'
+import Searcher from './lib/search.js'
 import cron from 'node-cron'
 import FileOlderThan from 'file-older-than'
 import 'dotenv/config'
 import express from 'express'
 import http from 'http'
+import sanitize from 'sanitize'
 
 var fileListPath = './filelist.json'
+var categoryListPath = './lib/categories.json'
+var categoryList = await parseJsonFile(categoryListPath)
 var fileList = []
 
 async function getFilesJob(){
   console.log('Updating the file list.')
-  fileList = await getAllFiles()
+  fileList = await getAllFiles(categoryList)
   saveJsonFile(fileListPath, fileList)
   console.log(`Finished updating file list. ${fileList.length} found.`)
 }
 
-if(!fileExists(fileListPath) || FileOlderThan(fileListPath, '1d')){
+if(process.env.FORCE_FILE_REBUILD == "1" || !fileExists(fileListPath) || FileOlderThan(fileListPath, '1d')){
   await getFilesJob()
 }
 else{
   fileList = await parseJsonFile(fileListPath)
 }
 
+var search = new Searcher(fileList)
+
 var app = express();
 var server = http.createServer(app);
+app.use(sanitize.middleware)
 app.set('view engine', 'ejs')
 
 app.get('/', function(req, res) {
@@ -35,7 +41,7 @@ app.get('/', function(req, res) {
 })
 
 app.get('/search', function(req, res) {
-  let results = fuzzySearch(fileList, req.query.q)
+  let results = search.findAllMatches(req.query.q)
   if(process.env.DEBUG == "1"){
     console.log(results)
   }
