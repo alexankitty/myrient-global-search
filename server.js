@@ -12,7 +12,6 @@ var fileListPath = './filelist.json'
 var categoryListPath = './lib/categories.json'
 var categoryList = await parseJsonFile(categoryListPath)
 var crawlTime = await fileTime(fileListPath)
-console.log(crawlTime)
 
 var fileList = []
 
@@ -59,6 +58,19 @@ app.get('/search', function(req, res) {
     results: results,
     crawlTime: crawlTime
   })  
+})
+
+app.get("/lucky", function(req, res) {
+  let results = search.findAllMatches(req.query.q)
+  if(process.env.DEBUG == "1"){
+    console.log(results)
+  }
+  if(results.items.length){
+    res.redirect(results.items[0].path)
+  }
+  else{
+    res.redirect("/")
+  }
 })
 
 server.listen(process.env.PORT, process.env.BIND_ADDRESS)
