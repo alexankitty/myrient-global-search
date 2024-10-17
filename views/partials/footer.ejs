@@ -1,2 +1,16 @@
-<p class="text-center text-secondary">&copy; 2024 Alexankitty</p>
-<p class="text-center text-secondary">Not affiliated with Myrient/Erista!</p>
+<div class="mb-2">
+    <p class="text-center text-secondary footer-text">&copy; 2024 Alexankitty</p>
+    <p class="text-center text-secondary footer-text">Not affiliated with Myrient/Erista!</p>
+    <p id="crawl-time" class="text-center text-secondary footer-text">Time of Last Crawl: </p>
+</div>
+
+<script defer>
+    function timeConverter(UNIX_timestamp){
+    var timestamp = parseInt(UNIX_timestamp)
+    var date = new Date(timestamp);
+    var options = { hour12: false };
+    //var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return date.toLocaleString('en-GB', options)
+    }
+    document.getElementById('crawl-time').innerText += ` ${timeConverter('<%= crawlTime %>')}`
+</script>

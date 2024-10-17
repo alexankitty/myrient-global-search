@@ -1,5 +1,5 @@
 import getAllFiles from './lib/dircrawl.js'
-import {parseJsonFile, saveJsonFile, fileExists} from './lib/loadfiles.js'
+import {parseJsonFile, saveJsonFile, fileExists, fileTime} from './lib/loadfiles.js'
 import Searcher from './lib/search.js'
 import cron from 'node-cron'
 import FileOlderThan from 'file-older-than'
@@ -11,6 +11,9 @@ import sanitize from 'sanitize'
 var fileListPath = './filelist.json'
 var categoryListPath = './lib/categories.json'
 var categoryList = await parseJsonFile(categoryListPath)
+var crawlTime = await fileTime(fileListPath)
+console.log(crawlTime)
+
 var fileList = []
 
 async function getFilesJob(){
@@ -20,6 +23,7 @@ async function getFilesJob(){
   if(search){
     search.createIndex(fileList) //recreate the search index
   }
+  crawlTime = await fileTime(fileListPath)
   console.log(`Finished updating file list. ${fileList.length} found.`)
 }
 
@@ -39,7 +43,8 @@ app.set('view engine', 'ejs')
 
 app.get('/', function(req, res) {
   res.render('pages/index', {
-    page: 'search'
+    page: 'search',
+    crawlTime: crawlTime
   })  
 })
 
@@ -51,7 +56,8 @@ app.get('/search', function(req, res) {
   res.render('pages/index', {
     page: 'results',
     query: req.query.q,
-    results: results
+    results: results,
+    crawlTime: crawlTime
   })  
 })
 
