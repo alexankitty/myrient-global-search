@@ -74,6 +74,13 @@ app.get("/lucky", function(req, res) {
   }
 })
 
+app.get("/settings", function(req, res) {
+  res.render('pages/index', {
+    page: 'settings',
+    crawlTime: crawlTime
+  })
+})
+
 server.listen(process.env.PORT, process.env.BIND_ADDRESS)
 server.on('listening', function() {
     console.log('Server started on %s:%s.', server.address().address, server.address().port)
