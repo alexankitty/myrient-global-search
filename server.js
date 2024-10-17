@@ -17,6 +17,9 @@ async function getFilesJob(){
   console.log('Updating the file list.')
   fileList = await getAllFiles(categoryList)
   saveJsonFile(fileListPath, fileList)
+  if(search){
+    search.createIndex(fileList) //recreate the search index
+  }
   console.log(`Finished updating file list. ${fileList.length} found.`)
 }
 

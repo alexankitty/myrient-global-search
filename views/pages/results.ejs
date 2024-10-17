@@ -22,7 +22,8 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
             <tr>
                 <th>Name</th>
                 <th>Category</th>
-                <th>type</th>
+                <th>Region</th>
+                <th>Type</th>
                 <th>Size</th>
                 <th>Date</th>
                 <th>Search Score</th>
@@ -31,11 +32,14 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
             <tr>
                 <td>
                     <a href="<%= results.items[x].path %>">
-                        <%= results.items[x].name %>
+                        <%= results.items[x].filename %>
                     </a>
                 </td>
                 <td>
                     <%= results.items[x].category %>
+                </td>
+                <td>
+                    <%= results.items[x].region %>
                 </td>
                 <td>
                     <%= results.items[x].type %>
