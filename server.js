@@ -69,7 +69,8 @@ app.get("/lucky", function(req, res) {
     res.redirect(results.items[0].path)
   }
   else{
-    res.redirect("/")
+    const magicNum = Math.floor(Math.random() * fileList.length)
+    res.redirect(fileList[magicNum].path)
   }
 })
 
