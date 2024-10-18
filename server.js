@@ -48,13 +48,14 @@ app.get('/', function(req, res) {
 })
 
 app.get('/search', function(req, res) {
-  let results = search.findAllMatches(req.query.q)
+  let query = req.query.q ? req.query.q : ''
+  let results = search.findAllMatches(query)
   if(process.env.DEBUG == "1"){
     console.log(results)
   }
   res.render('pages/index', {
     page: 'results',
-    query: req.query.q,
+    query: query,
     results: results,
     crawlTime: crawlTime
   })  
