@@ -6,7 +6,7 @@ It is finally here. There is now a way to search all of Myrient's offerings.
 2. npm
 
 # Self-Hosting
-1. Clone the repository. `git clone https://github.com/Myrient-Search-Engine`
+1. Clone the repository. `git clone https://github.com/alexankitty/Myrient-Search-Engine`
 2. Install dependencies. `npm i`
 3. Start the server. `node server.js`
 
