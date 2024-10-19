@@ -11,6 +11,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
         </pre>
         <div class="text-center text-white">
             <form>
+                <input type="hidden" name="s" id="searchSettings"> 
                 <input type="text" style="width: 80%;display: inline;" class="form-control bg-dark text-white mb-2" name="q">
                 <div>
                     <button type="submit" formaction="/search" class="btn btn-secondary">Myrient Search</button>
@@ -20,3 +21,10 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
         </div>
     </div>
 </div>
+
+<script>
+    settingStore = localStorage.getItem('settings')
+    if(typeof settingStore == 'string'){
+        document.getElementById('searchSettings').value = settingStore
+    }
+</script>

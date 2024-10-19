@@ -8,35 +8,58 @@ import express from 'express'
 import http from 'http'
 import sanitize from 'sanitize'
 
-var fileListPath = './filelist.json'
-var categoryListPath = './lib/categories.json'
-var categoryList = await parseJsonFile(categoryListPath)
-var crawlTime = await fileTime(fileListPath)
+let fileListPath = './filelist.json'
+let categoryListPath = './lib/categories.json'
+let categoryList = await parseJsonFile(categoryListPath)
+//TO DO: add if exist to suppress an error
+let crawlTime = await fileTime(fileListPath)
 
-var fileList = []
+let searchFields = ['filename', 'category', 'type', 'region']
+
+let defaultSettings = {
+  boost: {
+  },
+  combineWith: 'AND',
+  fields:  searchFields,
+  fuzzy: 0.2,
+  prefix: true,
+}
+
+//programmatically set the default boosts while reducing overhead when adding another search field
+for(let field in searchFields){
+  let fieldName = searchFields[field]
+  if(searchFields[field] == 'filename'){
+    defaultSettings.boost[fieldName] = 2
+  }
+  else {
+    defaultSettings.boost[fieldName] = 1
+  }
+}
+
+let fileList = []
 
 async function getFilesJob(){
   console.log('Updating the file list.')
   fileList = await getAllFiles(categoryList)
   saveJsonFile(fileListPath, fileList)
   if(search){
-    search.createIndex(fileList) //recreate the search index
+    search.createIndex(fileList, searchFields) //recreate the search index
   }
   crawlTime = await fileTime(fileListPath)
   console.log(`Finished updating file list. ${fileList.length} found.`)
 }
 
-if(process.env.FORCE_FILE_REBUILD == "1" || !fileExists(fileListPath) || FileOlderThan(fileListPath, '1d')){
+if(process.env.FORCE_FILE_REBUILD == "1" || !fileExists(fileListPath) || FileOlderThan(fileListPath, '1w')){
   await getFilesJob()
 }
 else{
   fileList = await parseJsonFile(fileListPath)
 }
 
-var search = new Searcher(fileList)
+let search = new Searcher(fileList, searchFields)
 
-var app = express();
-var server = http.createServer(app);
+let app = express();
+let server = http.createServer(app);
 app.use(sanitize.middleware)
 app.set('view engine', 'ejs')
 
@@ -47,9 +70,13 @@ app.get('/', function(req, res) {
   })  
 })
 
-app.get('/search', function(req, res) {
+app.get('/search', async function(req, res) {
   let query = req.query.q ? req.query.q : ''
-  let results = search.findAllMatches(query)
+  let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings
+  if(!settings.combineWith){
+    delete settings.combineWith //remove if unset to avoid crashing
+  }
+  let results = await search.findAllMatches(query, settings)
   if(process.env.DEBUG == "1"){
     console.log(results)
   }
@@ -58,11 +85,12 @@ app.get('/search', function(req, res) {
     query: query,
     results: results,
     crawlTime: crawlTime
-  })  
+    })  
 })
 
-app.get("/lucky", function(req, res) {
-  let results = search.findAllMatches(req.query.q)
+app.get("/lucky", async function(req, res) {
+  let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings
+  let results = await search.findAllMatches(req.query.q, settings)
   if(process.env.DEBUG == "1"){
     console.log(results)
   }
@@ -78,7 +106,8 @@ app.get("/lucky", function(req, res) {
 app.get("/settings", function(req, res) {
   res.render('pages/index', {
     page: 'settings',
-    crawlTime: crawlTime
+    crawlTime: crawlTime,
+    defaultSettings: defaultSettings
   })
 })
 

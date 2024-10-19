@@ -14,7 +14,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
                 <button type="submit" class="btn btn-secondary ml-2">Search</button>
             </div>
         </div>
-        <p class="m-2">Found <%= results.items.length %> result<%= results.items.length != 1 ? 's': '' %> in <%= results.elapsed %> seconds.</p>
+        <p class="m-2">Found <%= results.items.length %> result<%= results.items.length != 1 ? 's': '' %> in <%= results.elapsed %> seconds. <%= results.elapsed > 10 ? ' Lucky you, you caught the indexer while it was running.' : '' %></p>
     </form>
     
     <div class="col-sm-12 w-100 mt-3">
