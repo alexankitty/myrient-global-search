@@ -107,7 +107,8 @@ app.get("/settings", function(req, res) {
   res.render('pages/index', {
     page: 'settings',
     crawlTime: crawlTime,
-    defaultSettings: defaultSettings
+    defaultSettings: defaultSettings,
+    indexing: search.indexing
   })
 })
 
