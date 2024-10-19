@@ -84,7 +84,8 @@ app.get('/search', async function(req, res) {
     page: 'results',
     query: query,
     results: results,
-    crawlTime: crawlTime
+    crawlTime: crawlTime,
+    indexing: search.indexing
     })  
 })
 
@@ -107,8 +108,7 @@ app.get("/settings", function(req, res) {
   res.render('pages/index', {
     page: 'settings',
     crawlTime: crawlTime,
-    defaultSettings: defaultSettings,
-    indexing: search.indexing
+    defaultSettings: defaultSettings
   })
 })
 
