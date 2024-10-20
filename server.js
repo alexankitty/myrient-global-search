@@ -37,12 +37,13 @@ for(let field in searchFields){
 }
 
 let fileList = []
+let search //cheat so we can check before assignment
 
 async function getFilesJob(){
   console.log('Updating the file list.')
   fileList = await getAllFiles(categoryList)
   saveJsonFile(fileListPath, fileList)
-  if(search){
+  if(typeof search !== 'undefined'){
     search.createIndex(fileList, searchFields) //recreate the search index
   }
   crawlTime = await fileTime(fileListPath)
@@ -56,7 +57,7 @@ else{
   fileList = await parseJsonFile(fileListPath)
 }
 
-let search = new Searcher(fileList, searchFields)
+search = new Searcher(fileList, searchFields)
 
 let app = express();
 let server = http.createServer(app);

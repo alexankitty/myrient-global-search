@@ -4,6 +4,8 @@ It is finally here. There is now a way to search all of Myrient's offerings.
 # Requirements
 1. nodejs
 2. npm
+3. Requires at least 2.5GB worth of memory to complete the crawl
+
 
 # Self-Hosting
 1. Clone the repository. `git clone https://github.com/alexankitty/Myrient-Search-Engine`
