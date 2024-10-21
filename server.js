@@ -73,7 +73,8 @@ app.get('/', function(req, res) {
 
 app.get('/search', async function(req, res) {
   let query = req.query.q ? req.query.q : ''
-  let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings
+  let settings = req.query.s ? JSON.parse(atob(req.query.s)) : defaultSettings
+  console.log(settings)
   if(!settings.combineWith){
     delete settings.combineWith //remove if unset to avoid crashing
   }
