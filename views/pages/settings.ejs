@@ -28,7 +28,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
             <% for(let field in defaultSettings.boost) { %>
             <div class="d-inline-block">
               <label for="<%= field %>boost"><%= field.charAt(0).toUpperCase() + field.slice(1) %></label>
-              <input type="number" class="form-control bg-dark text-white" name="<%= field %>boost" id="<%= field %>boost" min="1" max="5">
+              <input type="number" pattern="\d*" class="form-control bg-dark text-white" name="<%= field %>boost" id="<%= field %>boost" min="1" max="5">
             </div>
             <% } %>
           </div>
@@ -60,111 +60,102 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
   </div>
 </div>
 
-<script defer>
-  defaults = <%-JSON.stringify(defaultSettings)%>
+    <script defer>
+      defaults = <%-JSON.stringify(defaultSettings)%>
+      settingStore = localStorage.getItem('settings')
+      settings = undefined
 
-  function handleSettings(saving = false) {
-    //You're more than welcome to clean this up if you want to.
-    for (let key in defaults) {
-      if (defaults[key] instanceof Object && !(defaults[key] instanceof Array)) {
-        for (let subkey in defaults[key]) {
-          //load default if it doesn't exist
-          if (!settings[key]) {
-            //create an empty object if for some reason it doesn't exist
-            settings[key] = {}
-          }
-          if (!settings[key][subkey]) {
-            settings[key][subkey] = defaults[key][subkey]
-          }
+      function setBoosts(){
+        for(let boost in defaults.boost){
+          if(typeof settings.boost[boost] == 'undefined') {settings.boost[boost] == defaults.boost[boost]}
+          document.getElementById(boost + 'boost').value = settings.boost[boost]
+          document.getElementById(boost + 'boost').addEventListener('keyup', () => {
+            validate(document.getElementById(boost + 'boost'))
+          })
+        }
+      }
 
-          if (typeof defaults[key][subkey] == "boolean") {
-            if (saving) {
-              settings[key][subkey] = document.getElementById(subkey + key).checked
-            } else {
-              document.getElementById(subkey + key).checked = settings[key][subkey]
-            }
-          } else {
-            if (saving) {
-              settings[key][subkey] = document.getElementById(subkey + key).value
-            } else {
-              document.getElementById(subkey + key).value = settings[key][subkey]
-            }
-          }
+      function setColumns(){
+        for(let field in settings.fields){
+          let element = document.getElementById(settings.fields[field])
+          if(!element){settings.fields.splice(field, 1)}
+          else{element.checked = true}
         }
-      } else {
-        //load in defaults if it doesn't exist and it's not a subkey
-        if (typeof settings[key] == 'undefined') {
-          settings[key] = defaults[key]
-        }
-        if (defaults[key] instanceof Array) {
-          if (saving) {
-            settings[key] = []
-            for (let item in defaults[key]) {
-              if (document.getElementById(defaults[key][item]).checked) {
-                settings[key].push(defaults[key][item])
-              }
-            }
-          } else {
-            for (let item in settings[key]) {
-              document.getElementById(settings[key][item]).checked = true
-            }
-          }
-          continue
-        } else {
-          if (typeof defaults[key] == "boolean") {
-            if (saving) {
-              settings[key] = document.getElementById(key).checked
-            } else {
-              document.getElementById(key).checked = settings[key]
-            }
-          } else {
-            let inputElem = document.getElementById(key)
-            if (saving) {
-              if (inputElem.getAttribute('type') == 'checkbox') {
-                if (inputElem.checked) {
-                  settings[key] = document.getElementById(key).value
-                } else {
-                  settings[key] = ''
-                }
-              }
-            } else {
-              if (inputElem.getAttribute('type') == 'checkbox') {
-                if (settings[key]) {
-                  inputElem.checked = true
-                }
-              } else {
-                document.getElementById(key).value = settings[key]
-              }
-            }
+        for(let field in defaults.fields){
+          document.getElementById(defaults.fields[field]).addEventListener('change', () => {
+            toggleLinkedTextBox(document.getElementById(defaults.fields[field]), document.getElementById(defaults.fields[field] + 'boost'))
+          })
+          let elem = document.getElementById(defaults.fields[field])
+          if(!elem.checked){
+            let boostField = document.getElementById(defaults.fields[field] + 'boost')
+            boostField.classList.add('text-secondary')
+            boostField.disabled = true
           }
         }
       }
-    }
-  }
-
-  async function loadSettings() {
-    settingStore = localStorage.getItem('settings')
-    settings = undefined
-    if (settingStore) {
-      try {
-        settings = await JSON.parse(settingStore)
-      } catch {
-        console.log("Settings corrupted, saving defaults instead")
+      //combinewith fuzzy prefix
+      function setOthers(){
+        if(typeof settings.combineWith == 'undefined') {settings.combineWith = defaults.combineWith}
+        if(typeof settings.fuzzy == 'undefined') {settings.fuzzy = defaults.fuzzy}
+        if(typeof settings.prefix == 'undefined') {settings.prefix = defaults.prefix}
+        document.getElementById('combineWith').checked = settings.combineWith ? true : false
+        document.getElementById('fuzzy').value = settings.fuzzy
+        document.getElementById('prefix').checked = settings.prefix
       }
-    }
-    if (typeof settings == 'undefined') {
-      console.log("loading defaults")
-      localStorage.setItem('settings', await JSON.stringify(defaults))
-      settings = defaults
-    }
-    handleSettings()
-  }
 
-  async function saveSettings() {
-    console.log("saving")
-    handleSettings(true)
-    localStorage.setItem('settings', await JSON.stringify(settings))
-  }
-  document.getElementById('saveSettings').onclick = saveSettings
-  document.body.onload = loadSettings
-</script>
+      function saveSettings(){
+        for(let boost in defaults.boost){settings.boost[boost] = parseInt(document.getElementById(boost + 'boost').value)}
+        settings.fields = []
+        for(let field in defaults.fields){
+          if(document.getElementById(defaults.fields[field]).checked){
+            settings.fields.push(defaults.fields[field])
+          }
+        }
+        settings.combineWith = document.getElementById('combineWith').checked ? 'AND' : ''
+        settings.fuzzy = parseFloat (document.getElementById('fuzzy').value)
+        settings.prefix = document.getElementById('prefix').checked
+        localStorage.setItem('settings', JSON.stringify(settings  ))
+        window.location.href = '/'
+      }
+
+      function loadSettings(){
+            if(!settingStore) {settings = defaults}
+        else{
+          try{
+            settings = JSON.parse(settingStore)
+          }
+          catch{
+            //load defaults if not exist
+            settings = defaults
+          }
+        }
+        setBoosts()
+        setColumns()
+        setOthers()
+      }
+      document.body.onload = loadSettings
+      document.getElementById('saveSettings').onclick = saveSettings
+
+      function validate(element){
+        let max = parseInt(element.max)
+        let min = parseInt(element.min)
+        let value = parseInt(element.value)
+        if(value > max) {element.value = max}
+        if(value < min) {element.value = min}
+        console.log(max, min, value)
+      }
+      fuzzyElem = document.getElementById('fuzzy')
+      fuzzyElem.addEventListener('keyup', () => {
+        validate(fuzzyElem)
+      })
+      function toggleLinkedTextBox(checkBox, textBox){
+        if(!    checkBox.checked) {
+          textBox.classList.add('text-secondary')
+          textBox.disabled = true
+        }
+        else {
+          textBox.classList.remove('text-secondary')
+          textBox.disabled = false
+        }
+      }
+  </script>   
