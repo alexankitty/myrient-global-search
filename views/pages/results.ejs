@@ -1,3 +1,9 @@
+<script src='https://code.jquery.com/jquery-3.7.1.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js'></script>
+<script src='https://cdn.datatables.net/2.1.8/js/dataTables.js'></script>
+<script src='https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js'></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">               
 <div class="row w-100 m-0">
     <form class="m-2 form-inline w-100" action="/search">
         <div class="w-100 align-items-center">
@@ -18,16 +24,18 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
     </form>
     
     <div class="col-sm-12 w-100 mt-3">
-        <table class="table text-white">
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Region</th>
-                <th>Type</th>
-                <th>Size</th>
-                <th>Date</th>
-                <th>Search Score</th>
-            </tr>
+        <table class="table text-white table-bordered" id="results">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Region</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Date</th>
+                    <th>Search Score</th>
+                </tr>
+            </thead>
             <% for (let x = 0; x < results.items.length; x++) { %>
             <tr>
                 <td>
@@ -58,3 +66,10 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
         </table>
     </div>
 </div>
+<script defer>resultTable = new DataTable('#results', {
+    "order": [6, 'desc'],
+    "lengthMenu": [100, { label: 'All', value: -1 }, 50, 25, 10],
+    "oLanguage": {
+        "sSearch": "Filter: "
+    }
+});</script>
