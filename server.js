@@ -53,7 +53,8 @@ async function getFilesJob() {
   await FileHandler.saveJsonFile(fileListPath, fileList);
   fileCount = fileList.length;
   if (typeof search == "undefined") {
-    await search.createIndex(fileList);
+    search = new Searcher(searchFields);
+    await search.createIndex(fileList)
   } else {
     await search.updateIndex(fileList);
   }
@@ -75,7 +76,8 @@ if (
 } else {
   fileList = await FileHandler.parseJsonFile(fileListPath);
   fileCount = fileList.length;
-  search = new Searcher(fileList, searchFields);
+  search = new Searcher(searchFields);
+  await search.createIndex(fileList)
   fileList = [];
 }
 
