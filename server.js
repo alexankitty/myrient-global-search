@@ -7,6 +7,7 @@ import "dotenv/config";
 import express from "express";
 import http from "http";
 import sanitize from "sanitize";
+import debugPrint from "./lib/debugprint.js";
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
@@ -94,14 +95,32 @@ app.get("/", function (req, res) {
 
 app.get("/search", async function (req, res) {
   let query = req.query.q ? req.query.q : "";
-  let settings = req.query.s ? JSON.parse(atob(req.query.s)) : defaultSettings;
-  if (!settings.combineWith) {
+  let settings = {}
+  try{
+    settings = req.query.s ? JSON.parse(atob(req.query.s)) : defaultSettings;
+  }
+  catch{
+    debugPrint('Search settings corrupt, forcing default.')
+    settings = defaultSettings
+  }
+  for(let key in defaultSettings){
+    let failed = false
+    if(typeof settings[key] != 'undefined'){
+      if(typeof settings[key] != typeof defaultSettings[key]){
+        debugPrint('Search settings corrupt, forcing default.')
+        failed = true
+        break
+      }
+    }
+    if(failed){
+      settings = defaultSettings
+    }
+  }
+  if (settings.combineWith != 'AND') {
     delete settings.combineWith; //remove if unset to avoid crashing
   }
   let results = await search.findAllMatches(query, settings);
-  if (process.env.DEBUG == "1") {
-    console.log(results);
-  }
+  debugPrint(results)
   let options = {
     query: query,
     results: results,
@@ -117,9 +136,7 @@ app.get("/search", async function (req, res) {
 app.get("/lucky", async function (req, res) {
   let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings;
   let results = await search.findAllMatches(req.query.q, settings);
-  if (process.env.DEBUG == "1") {
-    console.log(results);
-  }
+  debugPrint(results)
   if (results.items.length) {
     res.redirect(results.items[0].path);
   } else {
