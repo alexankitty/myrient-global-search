@@ -114,12 +114,16 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
         settings.combineWith = document.getElementById('combineWith').checked ? 'AND' : ''
         settings.fuzzy = parseFloat (document.getElementById('fuzzy').value)
         settings.prefix = document.getElementById('prefix').checked
-        localStorage.setItem('settings', JSON.stringify(settings  ))
+        localStorage.setItem('settings', JSON.stringify(settings))
         window.location.href = '/'
       }
 
       function loadSettings(){
-            if(!settingStore) {settings = defaults}
+        if(!settingStore) {
+          settings = structuredClone(defaults)
+          settingStore = JSON.stringify(settings)
+          localStorage.setItem('settings', settingStore)
+        }
         else{
           try{
             settings = JSON.parse(settingStore)

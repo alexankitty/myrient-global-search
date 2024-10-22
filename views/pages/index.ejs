@@ -16,4 +16,15 @@
 </footer>
 
 </body>
+<script>
+  if(window.location.pathname != '/settings'){ //don't load on the settings page
+    settingStore = localStorage.getItem('settings')
+    if(typeof settingStore == 'string' && window.location.href){
+        settingsElem = document.getElementById('searchSettings')
+        if(settingsElem){
+            settingsElem.value = btoa(settingStore)
+        }
+    }
+  }
+</script>
 </html>
