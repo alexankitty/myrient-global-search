@@ -1,5 +1,5 @@
 import getAllFiles from './lib/dircrawl.js'
-import {parseJsonFile, saveJsonFile, fileExists, fileTime} from './lib/loadfiles.js'
+import FileHandler from './lib/filehandler.js'
 import Searcher from './lib/search.js'
 import cron from 'node-cron'
 import FileOlderThan from 'file-older-than'
@@ -8,11 +8,19 @@ import express from 'express'
 import http from 'http'
 import sanitize from 'sanitize'
 
+
 let fileListPath = './filelist.json'
+let queryCountFile = './queries.txt'
 let categoryListPath = './lib/categories.json'
-let categoryList = await parseJsonFile(categoryListPath)
-//TO DO: add if exist to suppress an error
-let crawlTime = await fileTime(fileListPath)
+let categoryList = await FileHandler.parseJsonFile(categoryListPath)
+let crawlTime = 0
+let queryCount = 0
+if(FileHandler.fileExists(fileListPath)){
+  crawlTime = await FileHandler.fileTime(fileListPath)
+}
+if(FileHandler.fileExists(queryCountFile)){
+  queryCount = parseInt(await FileHandler.readFile(queryCountFile))
+}
 
 let searchFields = ['filename', 'category', 'type', 'region']
 
@@ -42,19 +50,19 @@ let search //cheat so we can check before assignment
 async function getFilesJob(){
   console.log('Updating the file list.')
   fileList = await getAllFiles(categoryList)
-  saveJsonFile(fileListPath, fileList)
+  await FileHandler.saveJsonFile(fileListPath, fileList)
   if(typeof search !== 'undefined'){
     search.createIndex(fileList, searchFields) //recreate the search index
   }
-  crawlTime = await fileTime(fileListPath)
+  crawlTime = await FileHandler.fileTime(fileListPath)
   console.log(`Finished updating file list. ${fileList.length} found.`)
 }
 
-if(process.env.FORCE_FILE_REBUILD == "1" || !fileExists(fileListPath) || FileOlderThan(fileListPath, '1w')){
+if(process.env.FORCE_FILE_REBUILD == "1" || !FileHandler.fileExists(fileListPath) || FileOlderThan(fileListPath, '1w')){
   await getFilesJob()
 }
 else{
-  fileList = await parseJsonFile(fileListPath)
+  fileList = await FileHandler.parseJsonFile(fileListPath)
 }
 
 search = new Searcher(fileList, searchFields)
@@ -67,7 +75,8 @@ app.set('view engine', 'ejs')
 app.get('/', function(req, res) {
   res.render('pages/index', {
     page: 'search',
-    crawlTime: crawlTime
+    crawlTime: crawlTime,
+    queryCount: queryCount.toLocaleString() 
   })  
 })
 
@@ -86,8 +95,11 @@ app.get('/search', async function(req, res) {
     query: query,
     results: results,
     crawlTime: crawlTime,
-    indexing: search.indexing
+    indexing: search.indexing,
+    queryCount: queryCount.toLocaleString() 
     })  
+  queryCount += 1
+  FileHandler.writeFile(queryCountFile, String(queryCount))
 })
 
 app.get("/lucky", async function(req, res) {
@@ -109,7 +121,8 @@ app.get("/settings", function(req, res) {
   res.render('pages/index', {
     page: 'settings',
     crawlTime: crawlTime,
-    defaultSettings: defaultSettings
+    defaultSettings: defaultSettings,
+    queryCount: queryCount.toLocaleString() 
   })
 })
 

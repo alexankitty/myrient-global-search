@@ -1,7 +1,7 @@
 <div class="mb-2">
     <p class="text-center text-secondary footer-text">&copy; 2024 Alexankitty <a href='https://ko-fi.com/Q5Q4IFNAO' target='_blank'><img height='36' style='border:0px;height:36px;vertical-align: bottom;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a></p>
     <p class="text-center text-secondary footer-text">Not affiliated with Myrient/Erista!</p>
-    <p id="crawl-time" class="text-center text-secondary footer-text">Time of Last Crawl: </p>
+    <p id="crawl-time" class="text-center text-secondary footer-text">Number of Queries: <%= queryCount %> | Time of Last Crawl: </p>
 </div>
 
 <script defer>
@@ -10,7 +10,7 @@
     var date = new Date(timestamp);
     var options = { hour12: false };
     //var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-    return date.toLocaleString('en-GB', options)
+    return date.toLocaleString(undefined, options)
     }
     document.getElementById('crawl-time').innerText += ` ${timeConverter('<%= crawlTime %>')}`
 </script>
