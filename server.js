@@ -152,6 +152,8 @@ app.get("/lucky", async function (req, res) {
     debugPrint(`${magicNum}: ${luckyPath}`);
     res.redirect(luckyPath);
   }
+  queryCount += 1;
+  FileHandler.writeFile(queryCountFile, String(queryCount));
 });
 
 app.get("/settings", function (req, res) {
