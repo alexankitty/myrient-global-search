@@ -83,6 +83,7 @@ let defaultOptions = {
   crawlTime: crawlTime,
   queryCount: queryCount,
   fileCount: fileCount,
+  termCount: search.miniSearch.termCount
 };
 
 let app = express();

@@ -6,6 +6,8 @@
     <div class="stats"> | </div>
     <div id="file-count" class="stats">Known Files:</div>
     <div class="stats"> | </div>
+    <div id="term-count" class="stats">Term Count:</div>
+    <div class="stats"> | </div>
     <div id="crawl-time" class="stats">Time of Last Crawl:</div>
     </div>
 </div>
@@ -15,10 +17,10 @@
     var timestamp = parseInt(UNIX_timestamp)
     var date = new Date(timestamp);
     var options = { hour12: false };
-    //var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-    return date.toLocaleString(undefined, options)
+    return date.toLocaleString(options)
     }
     document.getElementById('crawl-time').innerText += ` ${timeConverter('<%= crawlTime %>')}`
     document.getElementById('file-count').innerText += ` ${(<%= fileCount %>).toLocaleString(undefined)}`
     document.getElementById('query-count').innerText += ` ${(<%= queryCount %>).toLocaleString(undefined)}`
+    document.getElementById('term-count').innerText += ` ${(<%= termCount %>).toLocaleString(undefined)}`
 </script>
