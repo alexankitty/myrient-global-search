@@ -1,5 +1,5 @@
 <%
-let length = results.items.length < 4 ? 4 : results.items.length
+let length = results.items.length > 4 ? 4 : results.items.length
 let resultString = ''
 for(let x = 0; x < length; x++){
     resultString += `${x}: ${results.items[x].filename}\n\n`
