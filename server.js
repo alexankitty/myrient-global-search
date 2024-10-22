@@ -53,11 +53,11 @@ async function getFilesJob() {
   await FileHandler.saveJsonFile(fileListPath, fileList);
   fileCount = fileList.length;
   if (typeof search == "undefined") {
-    await search.createIndex(fileList)
-  }else{
-    await search.updateIndex(fileList)
+    await search.createIndex(fileList);
+  } else {
+    await search.updateIndex(fileList);
   }
-  fileList = []
+  fileList = [];
   crawlTime = await FileHandler.fileTime(fileListPath);
   console.log(`Finished updating file list. ${fileCount} found.`);
 }
@@ -76,14 +76,13 @@ if (
   fileList = await FileHandler.parseJsonFile(fileListPath);
   fileCount = fileList.length;
   search = new Searcher(fileList, searchFields);
-  fileList = []
+  fileList = [];
 }
-
 
 let defaultOptions = {
   crawlTime: crawlTime,
   queryCount: queryCount,
-  fileCount: fileCount
+  fileCount: fileCount,
 };
 
 let app = express();
@@ -98,32 +97,31 @@ app.get("/", function (req, res) {
 
 app.get("/search", async function (req, res) {
   let query = req.query.q ? req.query.q : "";
-  let settings = {}
-  try{
+  let settings = {};
+  try {
     settings = req.query.s ? JSON.parse(atob(req.query.s)) : defaultSettings;
+  } catch {
+    debugPrint("Search settings corrupt, forcing default.");
+    settings = defaultSettings;
   }
-  catch{
-    debugPrint('Search settings corrupt, forcing default.')
-    settings = defaultSettings
-  }
-  for(let key in defaultSettings){
-    let failed = false
-    if(typeof settings[key] != 'undefined'){
-      if(typeof settings[key] != typeof defaultSettings[key]){
-        debugPrint('Search settings corrupt, forcing default.')
-        failed = true
-        break
+  for (let key in defaultSettings) {
+    let failed = false;
+    if (typeof settings[key] != "undefined") {
+      if (typeof settings[key] != typeof defaultSettings[key]) {
+        debugPrint("Search settings corrupt, forcing default.");
+        failed = true;
+        break;
       }
     }
-    if(failed){
-      settings = defaultSettings
+    if (failed) {
+      settings = defaultSettings;
     }
   }
-  if (settings.combineWith != 'AND') {
+  if (settings.combineWith != "AND") {
     delete settings.combineWith; //remove if unset to avoid crashing
   }
   let results = await search.findAllMatches(query, settings);
-  debugPrint(results)
+  debugPrint(results);
   let options = {
     query: query,
     results: results,
@@ -137,18 +135,18 @@ app.get("/search", async function (req, res) {
 });
 
 app.get("/lucky", async function (req, res) {
-  let results = []
-  if(req.query.q){
+  let results = [];
+  if (req.query.q) {
     let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings;
     results = await search.findAllMatches(req.query.q, settings);
-    debugPrint(results)
+    debugPrint(results);
   }
   if (results.length) {
     res.redirect(results.items[0].path);
   } else {
     const magicNum = Math.floor(Math.random() * search.getIndexSize());
-    const luckyPath = search.findIndex(magicNum).path
-    debugPrint(`${magicNum}: ${luckyPath}`)
+    const luckyPath = search.findIndex(magicNum).path;
+    debugPrint(`${magicNum}: ${luckyPath}`);
     res.redirect(luckyPath);
   }
 });
