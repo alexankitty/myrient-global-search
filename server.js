@@ -88,6 +88,13 @@ let defaultOptions = {
   termCount: search.miniSearch.termCount
 };
 
+function updateDefaults(){
+  defaultOptions.crawlTime = crawlTime
+  defaultOptions.queryCount = queryCount
+  defaultOptions.fileCount = fileCount
+  defaultOptions.termCount = search.miniSearch.termCount
+}
+
 let app = express();
 let server = http.createServer(app);
 app.use(sanitize.middleware);
@@ -135,6 +142,7 @@ app.get("/search", async function (req, res) {
   res.render(indexPage, options);
   queryCount += 1;
   FileHandler.writeFile(queryCountFile, String(queryCount));
+  updateDefaults()
 });
 
 app.get("/lucky", async function (req, res) {
@@ -154,6 +162,7 @@ app.get("/lucky", async function (req, res) {
   }
   queryCount += 1;
   FileHandler.writeFile(queryCountFile, String(queryCount));
+  updateDefaults()
 });
 
 app.get("/settings", function (req, res) {
