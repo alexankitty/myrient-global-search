@@ -30,7 +30,7 @@ let defaultSettings = {
   boost: {},
   combineWith: "AND",
   fields: searchFields,
-  fuzzy: 0.2,
+  fuzzy: 0,
   prefix: true,
 };
 
@@ -52,10 +52,12 @@ async function getFilesJob() {
   fileList = await getAllFiles(categoryList);
   await FileHandler.saveJsonFile(fileListPath, fileList);
   fileCount = fileList.length;
-  if (typeof search !== "undefined") {
-    await search.createIndex(fileList, searchFields); //recreate the search index
-    //fileList = []
+  if (typeof search == "undefined") {
+    await search.createIndex(fileList)
+  }else{
+    await search.updateIndex(fileList)
   }
+  fileList = []
   crawlTime = await FileHandler.fileTime(fileListPath);
   console.log(`Finished updating file list. ${fileCount} found.`);
 }
@@ -73,9 +75,10 @@ if (
 } else {
   fileList = await FileHandler.parseJsonFile(fileListPath);
   fileCount = fileList.length;
+  search = new Searcher(fileList, searchFields);
+  fileList = []
 }
 
-search = new Searcher(fileList, searchFields);
 
 let defaultOptions = {
   crawlTime: crawlTime,
@@ -134,14 +137,19 @@ app.get("/search", async function (req, res) {
 });
 
 app.get("/lucky", async function (req, res) {
-  let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings;
-  let results = await search.findAllMatches(req.query.q, settings);
-  debugPrint(results)
-  if (results.items.length) {
+  let results = []
+  if(req.query.q){
+    let settings = req.query.s ? JSON.parse(req.query.s) : defaultSettings;
+    results = await search.findAllMatches(req.query.q, settings);
+    debugPrint(results)
+  }
+  if (results.length) {
     res.redirect(results.items[0].path);
   } else {
-    const magicNum = Math.floor(Math.random() * fileCount);
-    res.redirect(fileList[magicNum].path);
+    const magicNum = Math.floor(Math.random() * search.getIndexSize());
+    const luckyPath = search.findIndex(magicNum).path
+    debugPrint(`${magicNum}: ${luckyPath}`)
+    res.redirect(luckyPath);
   }
 });
 
