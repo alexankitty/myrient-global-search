@@ -50,9 +50,9 @@ async function getFilesJob() {
   console.log("Updating the file list.");
   fileList = await getAllFiles(categoryList);
   await FileHandler.saveJsonFile(fileListPath, fileList);
+  fileCount = fileList.length;
   if (typeof search !== "undefined") {
     await search.createIndex(fileList, searchFields); //recreate the search index
-    fileCount = fileList.length;
     //fileList = []
   }
   crawlTime = await FileHandler.fileTime(fileListPath);
