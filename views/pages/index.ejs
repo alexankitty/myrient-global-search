@@ -6,6 +6,7 @@
 <body class="d-flex flex-column min-vh-100">
 <header>
   <%- include('../partials/header'); %>
+  <%- page == 'results' ? include('../partials/opengraphresults') : include('../partials/opengraph') %>
 </header>
 
 <%- include(page); %>
