@@ -15,6 +15,8 @@ let categoryListPath = './lib/categories.json'
 let categoryList = await FileHandler.parseJsonFile(categoryListPath)
 let crawlTime = 0
 let queryCount = 0
+let fileCount = 0
+let indexPage = 'pages/index'
 if(FileHandler.fileExists(fileListPath)){
   crawlTime = await FileHandler.fileTime(fileListPath)
 }
@@ -52,10 +54,16 @@ async function getFilesJob(){
   fileList = await getAllFiles(categoryList)
   await FileHandler.saveJsonFile(fileListPath, fileList)
   if(typeof search !== 'undefined'){
-    search.createIndex(fileList, searchFields) //recreate the search index
+    await search.createIndex(fileList, searchFields) //recreate the search index
+    fileCount = fileList.length
+    //fileList = []
   }
   crawlTime = await FileHandler.fileTime(fileListPath)
-  console.log(`Finished updating file list. ${fileList.length} found.`)
+  console.log(`Finished updating file list. ${fileCount} found.`)
+}
+
+function buildOptions(page, options) {
+  return {page: page, ...options, ...defaultOptions}
 }
 
 if(process.env.FORCE_FILE_REBUILD == "1" || !FileHandler.fileExists(fileListPath) || FileOlderThan(fileListPath, '1w')){
@@ -63,9 +71,16 @@ if(process.env.FORCE_FILE_REBUILD == "1" || !FileHandler.fileExists(fileListPath
 }
 else{
   fileList = await FileHandler.parseJsonFile(fileListPath)
+  fileCount = fileList.length
 }
 
 search = new Searcher(fileList, searchFields)
+
+let defaultOptions = {
+  crawlTime: crawlTime,
+  queryCount: queryCount.toLocaleString(),
+  fileCount: fileCount
+}
 
 let app = express();
 let server = http.createServer(app);
@@ -73,11 +88,8 @@ app.use(sanitize.middleware)
 app.set('view engine', 'ejs')
 
 app.get('/', function(req, res) {
-  res.render('pages/index', {
-    page: 'search',
-    crawlTime: crawlTime,
-    queryCount: queryCount.toLocaleString() 
-  })  
+let page = 'search'
+res.render(indexPage, buildOptions(page))  
 })
 
 app.get('/search', async function(req, res) {
@@ -90,14 +102,14 @@ app.get('/search', async function(req, res) {
   if(process.env.DEBUG == "1"){
     console.log(results)
   }
-  res.render('pages/index', {
-    page: 'results',
+  let options = {
     query: query,
     results: results,
-    crawlTime: crawlTime,
     indexing: search.indexing,
-    queryCount: queryCount.toLocaleString() 
-    })  
+  }
+  let page = 'results'
+  options = buildOptions(page, options)
+  res.render(indexPage, options)  
   queryCount += 1
   FileHandler.writeFile(queryCountFile, String(queryCount))
 })
@@ -112,24 +124,22 @@ app.get("/lucky", async function(req, res) {
     res.redirect(results.items[0].path)
   }
   else{
-    const magicNum = Math.floor(Math.random() * fileList.length)
+    const magicNum = Math.floor(Math.random() * fileCount)
     res.redirect(fileList[magicNum].path)
   }
 })
 
 app.get("/settings", function(req, res) {
-  res.render('pages/index', {
-    page: 'settings',
-    crawlTime: crawlTime,
-    defaultSettings: defaultSettings,
-    queryCount: queryCount.toLocaleString() 
-  })
+  let options = {defaultSettings: defaultSettings}
+  let page = 'settings'
+  options = buildOptions(page, options)
+  res.render(indexPage, options)
 })
 
 server.listen(process.env.PORT, process.env.BIND_ADDRESS)
 server.on('listening', function() {
     console.log('Server started on %s:%s.', server.address().address, server.address().port)
 })
-console.log(`Loaded ${fileList.length} known files.`)
+console.log(`Loaded ${fileCount} known files.`)
 
 cron.schedule('0 0 0 * * *', getFilesJob)
