@@ -4,7 +4,8 @@ It is finally here. There is now a way to search all of Myrient's offerings.
 # Requirements
 1. nodejs
 2. npm
-3. Requires at least 2.5GB worth of memory to complete the crawl
+3. Requires at least 1.1GB worth of memory to complete the crawl
+4. Requires roughly 2.1GB worth of memory to complete indexing. Once done idle memory usage is about 1.1GB. Consider using swap in a low memory environment.
 
 
 # Self-Hosting

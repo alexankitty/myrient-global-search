@@ -195,4 +195,4 @@ server.on("listening", function () {
 });
 console.log(`Loaded ${fileCount} known files.`);
 
-cron.schedule("0 0 0 * * *", getFilesJob);
+cron.schedule("0 30 2 * * *", getFilesJob);
