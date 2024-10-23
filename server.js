@@ -145,6 +145,11 @@ app.get("/search", async function (req, res) {
   }
   let results = await search.findAllMatches(query, settings);
   debugPrint(results);
+  if(results.items.length){
+    queryCount += 1;
+    FileHandler.writeFile(queryCountFile, String(queryCount));
+    updateDefaults()
+  }
   let options = {
     query: query,
     results: results,
@@ -153,9 +158,7 @@ app.get("/search", async function (req, res) {
   let page = "results";
   options = buildOptions(page, options);
   res.render(indexPage, options);
-  queryCount += 1;
-  FileHandler.writeFile(queryCountFile, String(queryCount));
-  updateDefaults()
+
 });
 
 app.get("/lucky", async function (req, res) {
