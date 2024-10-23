@@ -8,6 +8,7 @@ import express from "express";
 import http from "http";
 import sanitize from "sanitize";
 import debugPrint from "./lib/debugprint.js";
+import compression from "compression";  
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
@@ -98,7 +99,8 @@ function updateDefaults(){
 let app = express();
 let server = http.createServer(app);
 app.use(sanitize.middleware);
-app.set("view engine", "ejs");
+app.use(compression())
+app.set("view engine", "ejs");    
 
 app.get("/", function (req, res) {
   let page = "search";
