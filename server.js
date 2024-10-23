@@ -51,6 +51,13 @@ let search; //cheat so we can check before assignment
 async function getFilesJob() {
   console.log("Updating the file list.");
   fileList = await getAllFiles(categoryList);
+  if(!fileList){
+    if(typeof search == "undefined"){
+      //fall back to loading the list if it exists
+      await loadFileList()
+    }
+    return
+  }
   await FileHandler.saveJsonFile(fileListPath, fileList);
   fileCount = fileList.length;
   if (typeof search == "undefined") {
@@ -68,6 +75,14 @@ function buildOptions(page, options) {
   return { page: page, ...options, ...defaultOptions };
 }
 
+async function loadFileList(){
+  fileList = await FileHandler.parseJsonFile(fileListPath);
+  fileCount = fileList.length;
+  search = new Searcher(searchFields);
+  await search.createIndex(fileList)
+  fileList = [];
+}
+
 if (
   process.env.FORCE_FILE_REBUILD == "1" ||
   !FileHandler.fileExists(fileListPath) ||
@@ -75,11 +90,7 @@ if (
 ) {
   await getFilesJob();
 } else {
-  fileList = await FileHandler.parseJsonFile(fileListPath);
-  fileCount = fileList.length;
-  search = new Searcher(searchFields);
-  await search.createIndex(fileList)
-  fileList = [];
+  await loadFileList()
 }
 
 let defaultOptions = {
