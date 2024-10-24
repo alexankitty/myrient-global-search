@@ -5,19 +5,18 @@ for(let x = 0; x < length; x++){
     resultString += `${x + 1}: ${results.items[x].filename}\n\n`
 }
 resultString = resultString.trim()
-let test = "test"
 %>
 <meta name="description" content="Myrient Search Results">
 
 <!-- Facebook Meta Tags -->
 <meta property="og:url" content="https://myrientsearch.org">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Myrient Search Results">
+<meta property="og:title" content="Myrient Search Results: <%= query %>">
 <meta property="og:description" content="<%= resultString %>">
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta property="twitter:domain" content="myrientsearch.org">
 <meta property="twitter:url" content="https://myrientsearch.org">
-<meta name="twitter:title" content="Myrient Search Results">
+<meta name="twitter:title" content="Myrient Search Results: <%= query %>">
 <meta name="twitter:description" content="<%= resultString %>">
