@@ -9,6 +9,7 @@ import http from "http";
 import sanitize from "sanitize";
 import debugPrint from "./lib/debugprint.js";
 import compression from "compression";  
+import { url } from "inspector";
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
@@ -120,6 +121,9 @@ app.get("/", function (req, res) {
 
 app.get("/search", async function (req, res) {
   let query = req.query.q ? req.query.q : "";
+  let pageNum = parseInt(req.query.p)
+  let urlPrefix = encodeURI(`/search?s=${req.query.s}&q=${req.query.q}&p=`)
+  pageNum = pageNum ? pageNum : 1
   let settings = {};
   try {
     settings = req.query.s ? JSON.parse(atob(req.query.s)) : defaultSettings;
@@ -153,7 +157,9 @@ app.get("/search", async function (req, res) {
   let options = {
     query: query,
     results: results,
+    pageNum: pageNum,
     indexing: search.indexing,
+    urlPrefix: urlPrefix
   };
   let page = "results";
   options = buildOptions(page, options);
