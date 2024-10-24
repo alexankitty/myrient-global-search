@@ -149,7 +149,7 @@ app.get("/search", async function (req, res) {
   }
   let results = await search.findAllMatches(query, settings);
   debugPrint(results);
-  if(results.items.length){
+  if(results.items.length && pageNum == 1){
     queryCount += 1;
     FileHandler.writeFile(queryCountFile, String(queryCount));
     updateDefaults()
