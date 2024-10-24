@@ -157,6 +157,7 @@
                 listElem.addEventListener('click', (e) => {
                     searchElem.value = listElem.innerText
                     suggestionList.style.display = 'none'
+                    selectedSuggestion = null
                     totalSuggestions = 0
                 })
                 listElem.addEventListener('mouseover', (e) => {
@@ -187,7 +188,7 @@
             searchElem.addEventListener('keyup', function (e) {
                 if(e.key === 'Escape'){
                     return  
-                }
+                }   
                 if(e.key === 'ArrowUp'){
                     if(!totalSuggestions) return
                     if(typeof selectedSuggestion != 'number'){
@@ -263,6 +264,8 @@
                 clearSelects()
                 document.getElementById('search').value = document.getElementById(suggestId).innerText
                 selectedSuggestion = null
+                suggestionList.style.display = 'none'
+                totalSugges tions = 0
             }
             function clearSelects(){
                 let suggestionList = document.getElementById('suggestionList')

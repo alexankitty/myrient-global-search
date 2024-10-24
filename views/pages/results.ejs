@@ -29,9 +29,11 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
                 </pre>
                 </a>
                 <input type="hidden" name="s" id="searchSettings">
-                <input type="text" class="w-50 form-control bg-dark text-white ml-2" name="q" value="<%= query %>"">
+                <input id="search" type="text" class="w-50 form-control bg-dark text-white ml-2" name="q" value="<%= query %>"">
                 <button type="submit" class="btn btn-secondary ml-2">Search</button>
+                
             </div>
+            <ul class="SuggestionList col-sm-12" id="suggestionList" style="width: 50%;left: 195px;"></ul>
         </div>
         <p class="m-2">Found <%= results.items.length %> result<%= results.items.length != 1 ? 's': '' %> in <%= results.elapsed %> seconds. <%= indexing ? "Indexing in progress, if the list is missing something please try reloading in a few minutes" : "" %></p>
     </form>
