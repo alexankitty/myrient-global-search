@@ -112,6 +112,7 @@ let app = express();
 let server = http.createServer(app);
 app.use(sanitize.middleware);
 app.use(compression())
+app.use(express.json())
 app.set("view engine", "ejs");    
 
 app.get("/", function (req, res) {
@@ -193,6 +194,18 @@ app.get("/settings", function (req, res) {
   options = buildOptions(page, options);
   res.render(indexPage, options);
 });
+
+app.post("/suggest", function(req, res){
+  if(!req.body){
+    return
+  }
+  if(typeof req.body.query == 'undefined'){
+    return
+  }
+  let suggestions = search.getSuggestions(req.body.query)
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({ suggestions }));
+})
 
 server.listen(process.env.PORT, process.env.BIND_ADDRESS);
 server.on("listening", function () {

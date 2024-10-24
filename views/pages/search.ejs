@@ -1,6 +1,6 @@
 <div class="row h-50 w-100 m-0">
-    <div class="col-sm-12 my-auto">
-        <pre style="font: 20px / 19px monospace; color: white; text-align: center; overflow: hidden;">
+  <div class="col-sm-12 my-auto">
+    <pre style="font: 20px / 19px monospace; color: white; text-align: center; overflow: hidden;">
 ______  ___              _____            _____ 
 ___   |/  /____  ___________(_)_____________  /_
 __  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
@@ -9,16 +9,16 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
           /____/                                
                                 Search!
         </pre>
-        <div class="text-center text-white">
-            <form>
-                <input type="hidden" name="s" id="searchSettings"> 
-                <input type="text" style="width: 80%;display: inline;" class="form-control bg-dark text-white mb-2" name="q">
-                <div>
-                    <button type="submit" formaction="/search" class="btn btn-secondary">Myrient Search</button>
-                    <button type="submit" formaction="/lucky" class="btn btn-secondary">I'm Feeling Lucky</button>
-                </div>
-            </form>
+    <div class="text-center text-white">
+      <form>
+        <input type="hidden" name="s" id="searchSettings">
+        <input id="search" type="text" style="width: 80%;display: inline;" class="form-control bg-dark text-white mb-2" name="q">
+        <ul class="SuggestionList col-sm-12" id="suggestionList" style="width: 78%;left: 11%;"></ul>
+        <div>
+          <button type="submit" formaction="/search" class="btn btn-secondary">Myrient Search</button>
+          <button type="submit" formaction="/lucky" class="btn btn-secondary">I'm Feeling Lucky</button>
         </div>
     </div>
+    </form>
+  </div>
 </div>
-
