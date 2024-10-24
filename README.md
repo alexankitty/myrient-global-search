@@ -1,6 +1,6 @@
 # Myrient Search Engine
 It is finally here. There is now a way to search all of Myrient's offerings.  
-[Myrient Search](https://myrientsearch.org) can be accessed by clicking the link.
+[Myrient Search](https://myrient.mahou.one) can be accessed by clicking the link.
 # Requirements
 1. nodejs
 2. npm
