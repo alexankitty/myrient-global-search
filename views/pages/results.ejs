@@ -1,4 +1,9 @@
 <% 
+    let pageCount = Math.ceil(results.items.length / 100)
+    pageCount = pageCount ? pageCount : 1 //always ensure 1 page
+    if(pageNum > pageCount){
+        pageNum = 1
+    }
     let entryStart = Math.floor((pageNum - 1) * 100)
     let entryEnd = entryStart + 100
     entryEnd = entryEnd > results.items.length ? results.items.length : entryEnd
@@ -74,8 +79,6 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
             <% } %>
         </table>
         <% 
-        let pageCount = Math.ceil(results.items.length / 100)
-        pageCount = pageCount ? pageCount : 1 //always ensure 1 page
         if(pageCount > 1) {
         %>
         <div class="row justify-content-between">
