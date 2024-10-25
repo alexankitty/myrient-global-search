@@ -13,8 +13,10 @@ import { url } from "inspector";
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
-let categoryListPath = "./lib/categories.json";
+let categoryListPath = "./lib/categories.json"
+let searchAlikesPath = './lib/searchalikes.json'
 let categoryList = await FileHandler.parseJsonFile(categoryListPath);
+let searchAlikes = await FileHandler.parseJsonFile(searchAlikesPath)
 let crawlTime = 0;
 let queryCount = 0;
 let fileCount = 0;
@@ -79,7 +81,7 @@ function buildOptions(page, options) {
 async function loadFileList(){
   fileList = await FileHandler.parseJsonFile(fileListPath);
   fileCount = fileList.length;
-  search = new Searcher(searchFields);
+  search = new Searcher(searchFields, searchAlikes.StringGroups);
   await search.createIndex(fileList)
   fileList = [];
 }
