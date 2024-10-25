@@ -32,6 +32,8 @@
         ["pc88", "pc-88", "pc 88"],
         ["dvd", "digital video disc", "digital versatile disc"],
         ["mastersystem", "ms", "master system"],
-        ["wii", "revolution"]
+        ["wii", "revolution"],
+        ["bros", "brothers", "bros."],
+        ["bros.", "brothers", "bros"]
     ]
 }

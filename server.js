@@ -196,14 +196,15 @@ app.get("/settings", function (req, res) {
   res.render(indexPage, options);
 });
 
-app.post("/suggest", function(req, res){
+app.post("/suggest", async function(req, res){
   if(!req.body){
     return
   }
   if(typeof req.body.query == 'undefined'){
     return
   }
-  let suggestions = search.getSuggestions(req.body.query)
+  let suggestions = await search.getSuggestions(req.body.query, defaultSettings)
+  debugPrint(suggestions)
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ suggestions }));
 })
