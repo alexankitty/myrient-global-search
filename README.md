@@ -51,3 +51,7 @@ server {
 ## SSL Certificate
 For the SSL certificate you can use certbot via the `certbot -d servername.tld` command and adding it to your `crontab`.  
 [Additional Information for Certbot Setup](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04)
+
+# Contributing
+You know the usual fluff.  
+Is there a missing category or string association? `lib/categories.json` and `lib/searchalikes.json` can both updated to include these. If you do update/improve these, please put in a pull request so that it can be added to the public hosted server, as well.
