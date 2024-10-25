@@ -9,14 +9,13 @@ import http from "http";
 import sanitize from "sanitize";
 import debugPrint from "./lib/debugprint.js";
 import compression from "compression";  
-import { url } from "inspector";
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
 let categoryListPath = "./lib/categories.json"
 let searchAlikesPath = './lib/searchalikes.json'
 let categoryList = await FileHandler.parseJsonFile(categoryListPath);
-let searchAlikes = await FileHandler.parseJsonFile(searchAlikesPath)
+global.searchAlikes = await FileHandler.parseJsonFile(searchAlikesPath)
 let crawlTime = 0;
 let queryCount = 0;
 let fileCount = 0;

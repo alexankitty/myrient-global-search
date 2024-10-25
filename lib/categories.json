@@ -404,5 +404,8 @@
         "World",
         "UK",
         "Asia"
-    ]
+    ],
+    "Special": {
+        "PlayStation": "PlayStation 1"
+    }
 }
