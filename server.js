@@ -8,7 +8,8 @@ import express from "express";
 import http from "http";
 import sanitize from "sanitize";
 import debugPrint from "./lib/debugprint.js";
-import compression from "compression";  
+import compression from "compression";
+import { generateAsciiArt } from './lib/asciiart.js';
 
 let fileListPath = "./filelist.json";
 let queryCountFile = "./queries.txt";
@@ -99,7 +100,8 @@ let defaultOptions = {
   crawlTime: crawlTime,
   queryCount: queryCount,
   fileCount: fileCount,
-  termCount: search.miniSearch.termCount
+  termCount: search.miniSearch.termCount,
+  generateAsciiArt: generateAsciiArt
 };
 
 function updateDefaults(){
@@ -114,7 +116,7 @@ let server = http.createServer(app);
 app.use(sanitize.middleware);
 app.use(compression())
 app.use(express.json())
-app.set("view engine", "ejs");    
+app.set("view engine", "ejs");
 
 app.get("/", function (req, res) {
   let page = "search";
@@ -208,6 +210,11 @@ app.post("/suggest", async function(req, res){
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ suggestions }));
 })
+
+app.get("/about", function (req, res) {
+  let page = "about";
+  res.render(indexPage, buildOptions(page));
+});
 
 server.listen(process.env.PORT, process.env.BIND_ADDRESS);
 server.on("listening", function () {

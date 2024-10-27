@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <!-- HTML Meta Tags -->
-<title>Myrient Search</title>
+<title><%= process.env.INSTANCE_NAME || 'Myrient' %> Search</title>
 
 <!-- CSS (load bootstrap from a CDN) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
@@ -47,7 +47,7 @@
     td a {
         display: block;
     }
-    
+
     .footer-text{
         margin: 0;
     }
@@ -105,7 +105,7 @@
         list-style-image: none;
         padding: 0;
         border: 1px solid #ccc;
-        margin: 0 0 0.2em 0;    
+        margin: 0 0 0.2em 0;
         border-radius: 3px;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         background: #262c2c;
@@ -189,8 +189,8 @@
             })
             searchElem.addEventListener('keyup', function (e) {
                 if(e.key === 'Escape'){
-                    return  
-                }   
+                    return
+                }
                 if(e.key === 'ArrowUp'){
                     if(!totalSuggestions) return
                     if(typeof selectedSuggestion != 'number'){
@@ -219,7 +219,7 @@
                     selectSuggestion(selectedSuggestion)
                     return
                 }
-                if(e.key === 'Enter'){ 
+                if(e.key === 'Enter'){
                     if(selectedSuggestion != null){
                         enterSuggestion(selectedSuggestion)
                         return
@@ -231,7 +231,7 @@
                     clearTimeout(typingTimeout);
                 }
                 typingTimeout = setTimeout(function() {
-                    typingTimeout = null;  
+                    typingTimeout = null;
                     if(!query){
                         let suggestionList = document.getElementById('suggestionList')
                         suggestionList.replaceChildren()

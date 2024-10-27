@@ -4,14 +4,9 @@
 <div class="row h-50 w-100 m-0">
   <div class="col-sm-12 my-auto text-center">
     <pre style="font: 20px / 19px monospace; color: white; text-align: center; overflow: hidden;">
-______  ___              _____            _____ 
-___   |/  /____  ___________(_)_____________  /_
-__  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
-_  /  / / _  /_/ /_  /   _  / /  __/  / / / /_  
-/_/  /_/  _\__, / /_/    /_/  \___//_/ /_/\__/  
-          /____/                                
+<%= generateAsciiArt() %>
                                 Settings
-        </pre>
+    </pre>
     <div class="card w-auto mx-auto text-center d-inline-block p-3">
       <form>
         <div class="form-group">
@@ -121,7 +116,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
         window.location.href = '/'
       }
 
-      function loadSettings(){  
+      function loadSettings(){
           $(function () {
             $('[data-toggle="tooltip"]').tooltip()
           })
@@ -168,4 +163,4 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
           textBox.disabled = false
         }
       }
-  </script>   
+  </script>
