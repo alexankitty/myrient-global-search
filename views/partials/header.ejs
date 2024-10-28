@@ -1,18 +1,12 @@
 <nav class="navbar navbar-expand-sm navbar-light text-white">
-    <a id="brand-name" class="navbar-brand text-white" href="/">Myrient Search</a>
+    <a id="brand-name" class="navbar-brand text-white" href="/"><%= process.env.INSTANCE_NAME || 'Myrient' %> Search</a>
     <a id="brand-name" class="navbar-brand text-white hidden" href="/search">Results</a>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link text-white" href="/settings">Settings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white" href="https://github.com/alexankitty/myrient-global-search/">Github Project</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="https://myrient.erista.me/donate/">Donate</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="https://myrient.erista.me/">Home</a>
+        <a class="nav-link text-white" href="/about">About</a>
       </li>
     </ul>
 </nav>

@@ -1,4 +1,4 @@
-<% 
+<%
     let pageCount = Math.ceil(results.items.length / 100)
     pageCount = pageCount ? pageCount : 1 //always ensure 1 page
     if(pageNum > pageCount){
@@ -13,31 +13,26 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js'></script>
 <script src='https://cdn.datatables.net/2.1.8/js/dataTables.js'></script>
 <script src='https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js'></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">               
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
 <div class="row w-100 m-0">
     <form class="ml-2 form-inline w-100" action="/search">
         <div class="w-100 align-items-center">
             <div class="form-group">
                 <a href="/">
                 <pre class="mt-4 ml-2" style="font: 6px / 5px monospace; color: white; text-align: center; overflow: hidden; display: inline-flex;">
-______  ___              _____            _____ 
-___   |/  /____  ___________(_)_____________  /_
-__  /|_/ /__  / / /_  ___/_  /_  _ \_  __ \  __/
-_  /  / / _  /_/ /_  /   _  / /  __/  / / / /_  
-/_/  /_/  _\__, / /_/    /_/  \___//_/ /_/\__/  
-          /____/                                
+<%= generateAsciiArt() %>
                 </pre>
                 </a>
                 <input type="hidden" name="s" id="searchSettings">
                 <input id="search" type="text" class="w-50 form-control bg-dark text-white ml-2" name="q" value="<%= query %>" autocomplete="off">
                 <button type="submit" class="btn btn-secondary ml-2">Search</button>
-                
+
             </div>
             <ul class="SuggestionList col-sm-12" id="suggestionList" style="width: 50%;left: 195px;"></ul>
         </div>
         <p class="m-2">Found <%= results.items.length %> result<%= results.items.length != 1 ? 's': '' %> in <%= results.elapsed %> seconds. <%= indexing ? "Indexing in progress, if the list is missing something please try reloading in a few minutes" : "" %></p>
     </form>
-    
+
     <div class="col-sm-12 w-100 mt-3">
         <p>Displaying results <%= entryStart %> through <%= entryEnd %>. </p>
         <table class="table text-white table-bordered" id="results">
@@ -80,7 +75,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
             </tr>
             <% } %>
         </table>
-        <% 
+        <%
         if(pageCount > 1) {
         %>
         <div class="row justify-content-between">
@@ -88,7 +83,7 @@ _  /  / / _  /_/ /_  /   _  / /  __/  / / / /_
                 <div class="dt-paging">
                     <nav aria-label="pagination">
                         <ul class="pagination">
-                            <%  
+                            <%
                                 let ellipsesElem = '<li class="dt-paging-button page-item disabled"><a class="page-link ellipsis" aria-controls="results" aria-disabled="true" data-dt-idx="ellipsis" tabindex="-1">…</a></li>          '
                                 let pageUrlPrefix = ''
                                 const getPageRange = (page) => {
