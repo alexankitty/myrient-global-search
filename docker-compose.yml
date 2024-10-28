@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  myrient-search:
+    build: .
+    ports:
+      - "8062:8062"
+    environment:
+      - PORT=8062
+      - BIND_ADDRESS=0.0.0.0
+      - FORCE_FILE_REBUILD=0
+      - DEBUG=0
+      - NODE_ENV=production
+      - MAX_JOB_QUEUE=1000
+      - MAX_FETCH_JOBS=1000
+      - INSTANCE_NAME=Myrient
+    volumes:
+      - ./data:/usr/src/app/data
+    restart: unless-stopped
