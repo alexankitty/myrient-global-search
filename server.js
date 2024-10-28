@@ -11,8 +11,8 @@ import debugPrint from "./lib/debugprint.js";
 import compression from "compression";
 import { generateAsciiArt } from './lib/asciiart.js';
 
-let fileListPath = "./filelist.json";
-let queryCountFile = "./queries.txt";
+let fileListPath = "./data/filelist.json";
+let queryCountFile = "./data/queries.txt";
 let categoryListPath = "./lib/categories.json"
 let searchAlikesPath = './lib/searchalikes.json'
 let categoryList = await FileHandler.parseJsonFile(categoryListPath);

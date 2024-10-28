@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   myrient-search:
-    build: .
+    image: ghcr.io/alexankitty/myrient-search-engine:latest
     ports:
       - "8062:8062"
     environment:
