@@ -39,6 +39,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Group</th>
                     <th>Category</th>
                     <th>Region</th>
                     <th>Type</th>
@@ -53,6 +54,9 @@
                     <a href="<%= results.items[x].path %>">
                         <%= results.items[x].filename %>
                     </a>
+                </td>
+                <td>
+                    <%= results.items[x].group %>
                 </td>
                 <td>
                     <%= results.items[x].category %>
