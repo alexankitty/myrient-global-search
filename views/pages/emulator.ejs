@@ -129,44 +129,104 @@
     console.log(`%c${window.location.origin}/about`, 'font-size: 14px; color: #90CAF9;');
 
     // Configure EmulatorJS
+    console.log('[Emulator] Starting emulator configuration');
+    console.log('[Emulator] System:', '<%= emulatorConfig.system %>');
+    console.log('[Emulator] Core:', '<%= emulatorConfig.core %>');
+
     window.EJS_player = '#game';
     window.EJS_core = '<%= emulatorConfig.core %>';
     window.EJS_gameUrl = '/proxy-rom/<%= romFile.id %>';
     window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
     window.EJS_startOnLoaded = true;
-    window.EJS_biosUrl = undefined;
-    window.EJS_gameName = '<%= romFile.filename.replace(/\.[^/.]+$/, '') %>';
+    window.EJS_gameName = '<%= romFile.filename.replace(/\.[^/.]+$/, "") %>';
     window.EJS_backgroundBlur = true;
     window.EJS_defaultOptions = {
-      'save-state-slot': 1,
-      'save-state-location': 'local'
+        'save-state-slot': 1,
+        'save-state-location': 'local'
     };
 
-    // Handle ROMs with progress
+    // BIOS configuration
+    window.EJS_biosUrl = <% if (emulatorConfig.bios) { %>
+        '/proxy-bios?url=' + encodeURIComponent(<%- JSON.stringify(Object.values(emulatorConfig.bios.files)[0].url) %>)
+    <% } else { %>
+        undefined
+    <% } %>;
+
+    console.log('[Emulator] BIOS configuration:', window.EJS_biosUrl);
+
+    // Required for Sega CD ??
+    window.EJS_loadStateURL = window.location.href;
+    window.EJS_saveStateURL = window.location.href;
+    window.EJS_cheats = true;
+
+    // Add error event listener for the emulator
+    window.EJS_onGameStart = () => {
+        console.log('[Emulator] Game started successfully');
+    };
+
+    window.EJS_onLoadState = (state) => {
+        console.log('[Emulator] Load state:', state);
+    };
+
+    window.EJS_onSaveState = (state) => {
+        console.log('[Emulator] Save state:', state);
+    };
+
+    window.EJS_onLoadError = (error) => {
+        console.error('[Emulator] Load error:', error);
+    };
+
     async function loadRom() {
       try {
+        console.log('[Emulator] Starting ROM load process');
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('download-progress');
         const progressText = document.getElementById('progress-text');
         progressContainer.style.display = 'flex';
 
-        // Check if the file is compressed based on extension
-        const isCompressed = /\.(zip)$/i.test('<%= romFile.filename %>');
+        const isCompressed = /\.(zip|7z)$/i.test('<%= romFile.filename %>');
+        const shouldUnpack = <%= emulatorConfig.unpackRoms %>;
+        console.log(`[Emulator] ROM compression status: ${isCompressed ? 'compressed' : 'uncompressed'}`);
+        console.log(`[Emulator] Should unpack: ${shouldUnpack}`);
 
-        // Download phase
         progressText.textContent = 'Downloading ROM...';
+        console.log('[Emulator] Initiating ROM download');
+
         const response = await fetch(EJS_gameUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        if (!isCompressed) {
-          // For uncompressed ROMs, just return the URL directly
+        // If we're not unpacking, still show download progress but return direct URL
+        if (!isCompressed || !shouldUnpack) {
+          const contentLength = response.headers.get('content-length');
+          const total = parseInt(contentLength, 10);
+          let loaded = 0;
+
+          const reader = response.body.getReader();
+          const chunks = [];
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            chunks.push(value);
+            loaded += value.length;
+
+            const percent = Math.round((loaded / total) * 100);
+            progressBar.style.width = percent + '%';
+            progressText.textContent = `Downloading ROM: ${percent}%`;
+          }
+
+          console.log('[Emulator] Using direct URL for ROM');
           progressContainer.style.display = 'none';
-          return EJS_gameUrl;
+
+          // Create blob from chunks for direct loading
+          const blob = new Blob(chunks);
+          return URL.createObjectURL(blob);
         }
 
-        // For compressed files, continue with decompression
+        // For compressed files that need unpacking, continue with decompression
         const contentLength = response.headers.get('content-length');
         const total = parseInt(contentLength, 10);
         let loaded = 0;
@@ -186,35 +246,44 @@
           progressText.textContent = `Downloading ROM: ${percent}%`;
         }
 
-        // Decompression phase - keep progress at 100%
+        // Decompression phase
         progressText.textContent = 'Decompressing the game...';
+        console.log('[Emulator] Starting ZIP extraction');
 
         const blob = new Blob(chunks);
         const zip = await JSZip.loadAsync(blob);
         const files = Object.keys(zip.files);
+        console.log('[Emulator] ZIP contents:', files);
 
         const romFile = files.find(f => !zip.files[f].dir);
         if (!romFile) {
           throw new Error('No ROM file found in ZIP archive');
         }
+        console.log('[Emulator] Found ROM file in ZIP:', romFile);
 
         const romData = await zip.files[romFile].async('blob');
+        console.log('[Emulator] ROM extraction complete');
         progressContainer.style.display = 'none';
         return URL.createObjectURL(romData);
       } catch (error) {
-        console.error('Error loading ROM:', error);
+        console.error('[Emulator] Error in loadRom:', error);
         throw error;
       }
     }
 
     loadRom()
       .then(romUrl => {
+        console.log('[Emulator] ROM loaded successfully, initializing EmulatorJS');
         window.EJS_gameUrl = romUrl;
         const script = document.createElement('script');
         script.src = `${window.EJS_pathtodata}loader.js`;
+        script.onerror = (error) => {
+          console.error('[Emulator] Failed to load EmulatorJS:', error);
+        };
         document.body.appendChild(script);
       })
       .catch(error => {
+        console.error('[Emulator] Fatal error:', error);
         const gameDiv = document.getElementById('game');
         gameDiv.innerHTML = `<div class="alert alert-danger">
           Error loading game: ${error.message}

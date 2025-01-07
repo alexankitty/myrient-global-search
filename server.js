@@ -277,6 +277,41 @@ app.get("/proxy-rom/:id", async function (req, res) {
   }
 });
 
+app.get("/proxy-bios", async function (req, res) {
+  // Block access if emulator is disabled
+  if (process.env.EMULATOR_ENABLED !== 'true') {
+    res.status(403).send('Emulator feature is disabled');
+    return;
+  }
+
+  const biosUrl = req.query.url;
+
+  // Validate that URL is from GitHub
+  if (!biosUrl || !biosUrl.startsWith('https://github.com')) {
+    res.status(403).send('Invalid BIOS URL - only GitHub URLs are allowed');
+    return;
+  }
+
+  try {
+    const response = await fetch(biosUrl);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const contentLength = response.headers.get('content-length');
+    const contentType = response.headers.get('content-type');
+
+    res.setHeader('Content-Type', contentType || 'application/octet-stream');
+    res.setHeader('Content-Length', contentLength);
+
+    response.body.pipe(res);
+  } catch (error) {
+    console.error('Error proxying BIOS:', error);
+    res.status(500).send('Error fetching BIOS file');
+  }
+});
+
 server.listen(process.env.PORT, process.env.BIND_ADDRESS);
 server.on("listening", function () {
   console.log(
